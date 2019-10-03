@@ -56,8 +56,8 @@ void setup() {
   FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
   FastLED.setBrightness(MIN_BRIGHTNESS); 
 
-  //gCurrentPatternNumber = EEPROM.read(eepaddress);
-  gCurrentPatternNumber = 0;
+  gCurrentPatternNumber = EEPROM.read(eepaddress);
+  //gCurrentPatternNumber = 0;
 
   if (gCurrentPatternNumber > maxMode) gCurrentPatternNumber = 0;   // A safety in case the EEPROM has an illegal value.
 
@@ -121,17 +121,25 @@ void readbutton() {                                           // Read the button
   if (b == 1) {                                               // Just a click event to advance to next pattern
     gCurrentPatternNumber = (gCurrentPatternNumber + 1) % ARRAY_SIZE(gPatterns);
     Serial.println(gCurrentPatternNumber);
+    FastLED.clear();
   }
 
   if (b == 2) {                                               // A double-click event to reset to 0 pattern
     gCurrentPatternNumber = 0;
     Serial.println(gCurrentPatternNumber);
+    FastLED.clear();
   }
 
   if (b == 3) {                                               // A hold event to write current pattern to EEPROM
     EEPROM.write(eepaddress,gCurrentPatternNumber);
     Serial.print("Writing: ");
-    Serial.println(gCurrentPatternNumber);    
+    Serial.println(gCurrentPatternNumber);
+    FastLED.clear();
+    leds[0] = CRGB::White;
+    FastLED.delay(200);
+    FastLED.show();
+    FastLED.delay(200);
+    FastLED.clear();
   }
 
 } // readbutton()
