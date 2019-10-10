@@ -7,14 +7,18 @@
 #define NUM_LEDS 72
 #define DATA_PIN 10
 
-#define MAX_BRIGHTNESS     64
+#define MAX_BRIGHTNESS     128
 #define MED_BRIGHTNESS     16
 #define MIN_BRIGHTNESS     8
 #define FRAMES_PER_SECOND  120
 
-#define RED_LEDS 24
+//#define RED_LEDS 24
+//#define AMBER_LEDS 48
+//#define GREEN_LEDS 72
+
+#define RED_LEDS 72
 #define AMBER_LEDS 48
-#define GREEN_LEDS 72
+#define GREEN_LEDS 24
 
 #define STOP_DELAY 6000
 #define AMBER_DELAY 2500
@@ -51,7 +55,7 @@ void setup() {
   pinMode(buttonPin, INPUT);      // Set button input pin
   digitalWrite(buttonPin, HIGH );
 
-  set_max_power_in_volts_and_milliamps(5, 500);
+  set_max_power_in_volts_and_milliamps(5, 750);
   
   FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
   FastLED.setBrightness(MIN_BRIGHTNESS); 
@@ -156,8 +160,8 @@ void trafficLight() {
   {
     //Go to REDAMBER
     FastLED.clear();
-    setColour(0, RED_LEDS, CRGB::Red);
-    setColour(RED_LEDS, AMBER_LEDS, CRGB::DarkOrange);
+    setColour(AMBER_LEDS, RED_LEDS, CRGB::Red);
+    setColour(GREEN_LEDS, AMBER_LEDS, CRGB::DarkOrange);
     //Remember the time
     previousMillis = currentMillis;
     //Change the state to REDAMBER
@@ -169,7 +173,7 @@ void trafficLight() {
   {
     //Go to GREEN
     FastLED.clear();
-    setColour(AMBER_LEDS, GREEN_LEDS, CRGB::Green);
+    setColour(0, GREEN_LEDS, CRGB::Green);
     //Remember the time
     previousMillis = currentMillis;
     //Change the state to GREEN
@@ -181,7 +185,7 @@ void trafficLight() {
   {
     //Go to AMBER
     FastLED.clear();
-    setColour(RED_LEDS, AMBER_LEDS, CRGB::DarkOrange);
+    setColour(GREEN_LEDS, AMBER_LEDS, CRGB::DarkOrange);
     //Remember the time
     previousMillis = currentMillis;
     //Change the state to AMBER
@@ -193,7 +197,7 @@ void trafficLight() {
   {
     //Go to RED
     FastLED.clear();
-    setColour(0, RED_LEDS, CRGB::Red);
+    setColour(AMBER_LEDS, RED_LEDS, CRGB::Red);
     //Remember the time
     previousMillis = currentMillis; //Remember the time
     //Change the state to RED
@@ -214,7 +218,7 @@ void rainbow() {
 void rainbowWithGlitter() {
 
   rainbow();                                                  // Built-in FastLED rainbow, plus some random sparkly glitter.
-  addGlitter(80);
+  addGlitter(70);
   
 } // rainbowWithGlitter()
 
